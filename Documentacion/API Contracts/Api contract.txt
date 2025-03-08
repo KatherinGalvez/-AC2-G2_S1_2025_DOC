@@ -1,0 +1,102 @@
+openapi: 3.0.1
+info:
+  title: Meditrack IoT API
+  description: API para la gestión de dispositivos, datos de sensores y usuarios en la plataforma Meditrack.
+  version: 1.0.0
+servers:
+  - url: https://api.meditrack.com/v1
+    description: Servidor de producción
+  - url: http://localhost:3000
+    description: Servidor local de desarrollo
+
+paths:
+  /devices:
+    get:
+      summary: Obtener la lista de dispositivos IoT registrados
+      responses:
+        '200':
+          description: Lista de dispositivos obtenida exitosamente
+    post:
+      summary: Registrar un nuevo dispositivo IoT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                type:
+                  type: string
+      responses:
+        '201':
+          description: Dispositivo registrado exitosamente
+
+  /sensors:
+    get:
+      summary: Obtener datos de sensores
+      responses:
+        '200':
+          description: Datos de sensores obtenidos exitosamente
+    post:
+      summary: Enviar datos de sensores
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceId:
+                  type: string
+                timestamp:
+                  type: string
+                  format: date-time
+                data:
+                  type: object
+      responses:
+        '201':
+          description: Datos de sensor registrados correctamente
+
+  /users:
+    post:
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuario registrado exitosamente
+
+  /auth/login:
+    post:
+      summary: Iniciar sesión en la plataforma
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+        '401':
+          description: Credenciales inválidas
